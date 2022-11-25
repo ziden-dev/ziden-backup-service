@@ -1,0 +1,450 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Issuer Server",
+    "description": "API for issuser server"
+  },
+  "tags": [
+    {
+      "name": "authen",
+      "description": "API for authentication"
+    },
+    {
+      "name": "data-encrypt",
+      "description": "API for upload and get data encrypt"
+    },
+    {
+      "name": "private-key-encrypt",
+      "description": "API for upload and get private key encrypt"
+    }
+  ],
+  "paths": {
+    "/api/authen/register": {
+      "post": {
+        "tags": [
+          "authen"
+        ],
+        "summary": "API Resgister account",
+        "description": "API register account",
+        "requestBody": {
+          "description": "Register new account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/authen/login": {
+      "post": {
+        "tags": [
+          "authen"
+        ],
+        "summary": "API Login",
+        "description": "API for get jwt",
+        "requestBody": {
+          "description": "Enter username and password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "authen"
+        ],
+        "security": [
+          {
+            "bearerAuth": [
+              "write", "read"
+            ]
+          }
+        ],
+        "summary": "API Resgister account",
+        "description": "API register account",
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+
+      }
+    },
+    "/api/data-encrypt": {
+      "post": {
+        "tags": [
+          "data-encrypt"
+        ],
+        "summary": "API for post data encrypt",
+        "description": "API for post data encrypt",
+        "requestBody": {
+          "description": "Your holderId, issuerId, claimId, data and nonce",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataEncrypt"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/DataEncrypt"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/DataEncrypt"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "data-encrypt"
+        ],
+        "summary": "API for get data encrypt by holderId, issuerId or",
+        "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "holderId",
+            "in": "query",
+            "description": "holder id",
+            "schema": {
+              "type": "string",
+              "example": "123"
+            }
+          },
+          {
+            "name": "issuerId",
+            "in": "query",
+            "description": "holder id",
+            "schema": {
+              "type": "string",
+              "example": "123"
+            }
+          },
+          {
+            "name": "claimId",
+            "in": "query",
+            "description": "holder id",
+            "schema": {
+              "type": "string",
+              "example": "123"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/private-key-encrypt": {
+      "post": {
+        "tags": [
+          "private-key-encrypt"
+        ],
+        "summary": "API for post data encrypt",
+        "description": "API for post data encrypt",
+        "requestBody": {
+          "description": "Your holderId, keyEncrypt",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateKeyEncrypt"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateKeyEncrypt"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivateKeyEncrypt"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "private-key-encrypt"
+        ],
+        "summary": "API for get data encrypt by holderId, issuerId or",
+        "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "holderId",
+            "in": "query",
+            "description": "holder id",
+            "schema": {
+              "type": "string",
+              "example": "123"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APIResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "username01"
+          },
+          "password": {
+            "type": "string",
+            "example": "password01"
+          }
+        }
+      },
+      "DataEncrypt": {
+        "type": "object",
+        "properties": {
+          "holderId": {
+            "type": "string",
+            "description": "Holder",
+            "example": "123"
+          },
+          "issuerId": {
+            "type": "string",
+            "description": "iusser",
+            "example": "123"
+          },
+          "claimId": {
+            "type": "string",
+            "description": "claim",
+            "example": "123"
+          },
+          "data": {
+            "type": "string",
+            "description": "Your data encrypted by your DEK",
+            "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
+          },
+          "nonce": {
+            "type": "string",
+            "description": "nonce",
+            "example": "90026a9dde6b4f4e53e98031fac38fb642b6b753aa766756"
+          }
+        }
+      },
+      "PrivateKeyEncrypt": {
+        "type": "object",
+        "properties": {
+          "holderId": {
+            "type": "string",
+            "description": "Holder id",
+            "example": "123"
+          },
+          "keyEncrypt": {
+            "type": "string",
+            "description": "your DEK encrypted by your publickey",
+            "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
