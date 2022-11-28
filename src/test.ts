@@ -2,17 +2,22 @@ import axios from "axios";
 import libsodium from "libsodium-wrappers";
 import fetch from "node-fetch";
 
+// Your publicKey and privateKey
 const key_gen = {
     publicKey: '15f84b01d69ce8ba54264f666a3266ff64a3b386c4da60771d92647185dde720',
     privateKey: '809b4a4ea1d8572fda6b6fecfffb4f25b4fa3d83306439423cc8ed42ad1f6cc9',
     keyType: 'x25519'
 }
+
+// Your Key to encrypt your claim and raw data
+// dek will encrypt by your publicKey
 const dek = "eb2c2eb5af34b4b2c32fae36550b95645c67dcc7430170604e39ce2b8c83a383";
 
 const baseUrl = "http://localhost:5005";
 const urlPrivateEncrypt = "/api/private-key-encrypt";
 const urlEncrypt = "/api/data-encrypt";
 
+// this function shows how to encrypt and decrypt your Data
 async function encodeClaim() {
     const claim = {
         rawData: {
@@ -65,6 +70,7 @@ async function encodeClaim() {
     console.log(JSON.parse(decodeClaimDek));
 }
 
+// upload your data and Dek to server
 async function testUploadDataEncrypt() {
     console.log("---------test upload data-----------");
     const claim = {
@@ -125,6 +131,7 @@ async function testUploadDataEncrypt() {
     console.log(uploadPrivateResponse.data);
 }
 
+// get data and dek from server and decode your data
 async function testDecode() {
 
     console.log("---------test decode data-----------");
@@ -143,18 +150,6 @@ async function testDecode() {
         }
     });
     const dekEncrypt = await getReq.data.data.privateKeyEncrypt.keyEncrypt;
-
-    // const claimReq = await axios({
-    //     method: 'get',
-    //     baseURL: baseUrl,
-    //     url: urlEncrypt,
-    //     params: {
-    //         holderId: holderId,
-    //         issuerId: issuerId,
-    //         claimId: claimId
-    //     }
-    // });
-    // console.log(claimReq);
 
     const x = await fetch(baseUrl + urlEncrypt + "?" + "holderId=" + holderId + "&issuerId=" + issuerId + "&claimId=" + claimId, {
         method: 'GET',
