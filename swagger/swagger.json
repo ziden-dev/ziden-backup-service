@@ -22,6 +22,20 @@
         ],
         "summary": "API for post data encrypt",
         "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ZIDEN",
+                "EUENO"
+              ],
+              "default": "ZIDEN"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Your holderId, issuerId, claimId, data and nonce",
           "content": {
@@ -99,6 +113,18 @@
               "type": "string",
               "example": "123"
             }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ZIDEN",
+                "EUENO"
+              ],
+              "default": "ZIDEN"
+            }
           }
         ],
         "responses": {
@@ -132,6 +158,20 @@
         ],
         "summary": "API for post data encrypt",
         "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ZIDEN",
+                "EUENO"
+              ],
+              "default": "ZIDEN"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Your holderId, keyEncrypt",
           "content": {
@@ -190,6 +230,18 @@
             "schema": {
               "type": "string",
               "example": "123"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ZIDEN",
+                "EUENO"
+              ],
+              "default": "ZIDEN"
             }
           }
         ],

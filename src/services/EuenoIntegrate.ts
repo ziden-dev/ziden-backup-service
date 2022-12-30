@@ -1,59 +1,107 @@
 import { WALLET_ADDRESS, PRIVATE_KEY, BUCKET_ID } from "../common/config/secrets.js";
 import sigUtil, { SignTypedDataVersion, TypedMessage } from "@metamask/eth-sig-util";
 import axios from "axios";
-import fs from "fs-extra";
-import request from "request-promise";
+import EuenoToken from "../models/EuenoToken.js";
 
 export async function getAuthenToken() {
-    const privateKey = PRIVATE_KEY;
 
-    let timeNow = parseInt((Date.now() / 1000).toString());
+    const euenoToken = await EuenoToken.findOne();
+    let token = "";
 
-    const DOMAIN = [
-        {name: "url", type: "string"},
-        {name: "time", type: "uint256"},
-    ];
+    if (euenoToken) {
+        token = euenoToken.token!;
+    }
 
-    const DATA = [
-        {name: "action", type: "string"},
-        {name: "account", type: "address"},
-    ];
-
-    const msgParams = {
-        types: {
-            EIP712Domain: DOMAIN,
-            Data: DATA,
-        },
-        primaryType: "Data",
-        domain: {
-            url: "eueno.io",
-            time: timeNow,
-        },
-        message: {
-            action: "Eueno login",
-            account: WALLET_ADDRESS,
+    if (!checkEuenoTokenValid(token)) {
+        try {
+            const privateKey = PRIVATE_KEY;
+    
+            let timeNow = parseInt((Date.now() / 1000).toString());
+        
+            const DOMAIN = [
+                {name: "url", type: "string"},
+                {name: "time", type: "uint256"},
+            ];
+        
+            const DATA = [
+                {name: "action", type: "string"},
+                {name: "account", type: "address"},
+            ];
+        
+            const msgParams = {
+                types: {
+                    EIP712Domain: DOMAIN,
+                    Data: DATA,
+                },
+                primaryType: "Data",
+                domain: {
+                    url: "eueno.io",
+                    time: timeNow,
+                },
+                message: {
+                    action: "Eueno login",
+                    account: WALLET_ADDRESS,
+                }
+            } as TypedMessage<{
+                EIP712Domain: typeof DOMAIN,
+                Data: typeof DATA,
+            }>;
+        
+            let sign = sigUtil.signTypedData(
+                {   
+                    privateKey: Buffer.from(privateKey, "hex"), 
+                    data: msgParams, 
+                    version: SignTypedDataVersion.V4
+                });
+        
+            const res = await axios.post(`https://developers.eueno.io/api/v1/users/login`, {
+                timestamp: timeNow,
+                address: WALLET_ADDRESS,
+                signature: sign,
+            });
+            
+            token = res.data.data.token ?? "";
+            
+            const euenoTokenSave = await EuenoToken.findOne();
+            if (!euenoTokenSave) {
+                const tokenNew = new EuenoToken({
+                    token: token
+                });
+                await tokenNew.save();
+            } else {
+                euenoTokenSave.token = token;
+                await euenoTokenSave.save();
+            }
+            
+        } catch (err: any) {
+            throw("Cannot connect with Eueno");
         }
-    } as TypedMessage<{
-        EIP712Domain: typeof DOMAIN,
-        Data: typeof DATA,
-    }>;
+    }
 
-    let sign = sigUtil.signTypedData(
-        {   
-            privateKey: Buffer.from(privateKey, "hex"), 
-            data: msgParams, 
-            version: SignTypedDataVersion.V4
+    return token;
+}
+
+async function checkEuenoTokenValid(token: string) {
+    if (token == "") {
+        return false;
+    }
+    try {
+        const url = 'https://developers.eueno.io/api/v1/project/lists';
+        const response = await axios({
+            method: "get",
+            url: url,
+            headers: {
+                "Authorization": "Bearer " + token
+            }
         });
 
-    const res = await axios.post(`https://developers.eueno.io/api/v1/users/login`, {
-        timestamp: timeNow,
-        address: WALLET_ADDRESS,
-        signature: sign,
-    });
-    
-    const token = res.data.data.token ?? "";
-    
-    return token;
+        if (response.status == 200) {
+            return true;
+        }
+        return false;
+    } catch (err: any) {
+        return false;
+    }
 }
 
 export async function createNewFolder(name: string, parentId: string) {

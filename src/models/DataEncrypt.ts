@@ -5,7 +5,8 @@ const DataEncrypt = new mongoose.Schema({
     holderId: String,
     issuerId: String,
     claimId: String,
-    url: String
+    data: String,
+    nonce: String
 });
 
 export default mongoose.model("DataEncrypt", DataEncrypt);

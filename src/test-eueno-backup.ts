@@ -107,7 +107,7 @@ async function testUploadDataEncrypt() {
     const updateDataResponse = await axios({
         method: "post",
         baseURL: baseUrl,
-        url: urlEncrypt,
+        url: urlEncrypt+ "?type=EUENO",
         data: {
             "holderId": holderId,
             "issuerId": issuerId,
@@ -122,7 +122,7 @@ async function testUploadDataEncrypt() {
     const uploadPrivateResponse = await axios({
         method: "post",
         baseURL: baseUrl,
-        url: urlPrivateEncrypt,
+        url: urlPrivateEncrypt + "?type=EUENO",
         data: {
             "holderId": holderId,
             "keyEncrypt": dekEncodeByPub
@@ -144,14 +144,14 @@ async function testDecode() {
     const getReq = await axios({
         method: "get",
         baseURL: baseUrl,
-        url: urlPrivateEncrypt,
+        url: urlPrivateEncrypt + "?type=EUENO",
         params: {
             holderId: holderId
         }
     });
     const dekEncrypt = await getReq.data.data.privateKeyEncrypt.keyEncrypt;
 
-    const x = await fetch(baseUrl + urlEncrypt + "?" + "holderId=" + holderId + "&issuerId=" + issuerId + "&claimId=" + claimId, {
+    const x = await fetch(baseUrl + urlEncrypt + "?" + "holderId=" + holderId + "&issuerId=" + issuerId + "&claimId=" + claimId + "&type=EUENO", {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

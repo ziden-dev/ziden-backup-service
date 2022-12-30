@@ -1,5 +1,4 @@
 import DataEncrypt from "../models/DataEncrypt.js";
-import { getDataFromUrl, uploadClaimDataToEueno } from "./EuenoIntegrate.js";
 
 export async function updateData(holderId: string, issuerId: string, claimId: string, data: string, nonce: string) {
     try {
@@ -9,38 +8,23 @@ export async function updateData(holderId: string, issuerId: string, claimId: st
             _id: id
         });
         if (dataEncrypt) {
-            const claimInfor = {
-                holderId: holderId,
-                issuerId: issuerId,
-                claimId: claimId,
-                data: data,
-                nonce: nonce
-            }
-            const url = await uploadClaimDataToEueno(claimInfor, id);
-            dataEncrypt.url = url;
+            dataEncrypt.data = data;
+            dataEncrypt.nonce = nonce;
             await dataEncrypt.save();
             return dataEncrypt;
         } else {
-            const claimInfor = {
-                holderId: holderId,
-                issuerId: issuerId,
-                claimId: claimId,
-                data: data,
-                nonce: nonce
-            }
-            const url = await uploadClaimDataToEueno(claimInfor, id);
             const newData = new DataEncrypt({
                 _id: id,
                 holderId: holderId,
                 issuerId: issuerId,
                 claimId: claimId,
-                url: url
+                data: data,
+                nonce: nonce
             });
             await newData.save();
             return newData;
         }
     } catch (err: any) {
-        
         throw (err);
     }
 }
@@ -57,15 +41,19 @@ export async function getAllClaimByQuery(holderId: string | undefined, issuerId:
         if (claimId != "") {
             query.claimId = claimId;
         }
-        
+        console.log(query);
         const dataEncrypts = await DataEncrypt.find(query);
         const res: Array<any> = [];
-        
-        for (let i = 0; i < dataEncrypts.length; i++) {
-            const data = await getDataFromUrl( dataEncrypts[i].url! );
-            res.push(data);
-        }
-        
+        dataEncrypts.forEach((element) => {
+            const tmp = {
+                holderId: element.holderId?.toString(),
+                issuerId: element.issuerId?.toString(),
+                claimId: element.claimId?.toString(),
+                data: element.data?.toString(),
+                nonce: element.nonce?.toString()
+            };
+            res.push(tmp);
+        });
         return res;
     } catch (err: any) {
         throw (err);
