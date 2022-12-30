@@ -42,7 +42,7 @@ export class DataEncryptController {
             }
 
             const dataEncrypt = await getAllClaimByQuery(holderId, issuerId, claimId);
-            console.log(dataEncrypt);
+            
             res.send(buildResponse(ResultMessage.APISUCCESS.status, {dataEncrypt: dataEncrypt}, ResultMessage.APISUCCESS.message));
         } catch (err: any) {
             res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));

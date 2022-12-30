@@ -5,7 +5,6 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import {MONGODB_URI, LOG_OUTPUT} from "./common/config/secrets.js";
-import {AthenRoutes} from "./routers/authenRoutes.js";
 import dotenv from 'dotenv';
 import * as swaggerUi from "swagger-ui-express";
 import { readFileSync } from 'fs';
@@ -30,7 +29,6 @@ class Server {
     }
 
     public routes(): void {
-        this.app.use("/api/authen", new AthenRoutes().router);
         this.app.use("/api/data-encrypt", new DataEncryptRoutes().router);
         this.app.use("/api/private-key-encrypt", new PrivateKeyEncryptRoutes().router);  
     }

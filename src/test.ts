@@ -13,7 +13,7 @@ const key_gen = {
 // dek will encrypt by your publicKey
 const dek = "eb2c2eb5af34b4b2c32fae36550b95645c67dcc7430170604e39ce2b8c83a383";
 
-const baseUrl = "http://localhost:5005";
+const baseUrl = "http://localhost:5009";
 const urlPrivateEncrypt = "/api/private-key-encrypt";
 const urlEncrypt = "/api/data-encrypt";
 
@@ -174,9 +174,9 @@ async function testDecode() {
 
 async function main() {
     
-    testUploadDataEncrypt();
+    await testUploadDataEncrypt();
 
-    testDecode();
+    await testDecode();
 }
 
 main();

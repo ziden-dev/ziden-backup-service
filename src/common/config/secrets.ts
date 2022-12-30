@@ -10,3 +10,9 @@ export const LOG_OUTPUT = process.env.LOG_OUTPUT ?? "dev";
 
 export const DATA_ENCRYPT_DB_PATH = process.env.DATA_ENCRYPT_DB_PATH ?? "db/data_encrypt";
 export const PRIVATE_KEY_ENCRYPT_DB_PATH = process.env.PRIVATE_KEY_ENCRYPT_DB_PATH ?? "db/private_key_encrypt";
+
+export const EUENO_API_KEY = process.env.EUENO_API_KEY ?? "";
+export const OWALLET_ADDRESS = process.env.OWALLET_ADDRESS ?? "";
+export const WALLET_ADDRESS = process.env.WALLET_ADDRESS ?? "";
+export const PRIVATE_KEY = process.env.PRIVATE_KEY ?? "";
+export const BUCKET_ID = process.env.BUCKET_ID ?? "";
