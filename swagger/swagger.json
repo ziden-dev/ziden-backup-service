@@ -154,20 +154,46 @@
         ],
         "summary": "API for post data encrypt",
         "description": "API for post data encrypt",
-        "parameters": [
-          {
-            "name": "type",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ZIDEN",
-                "EUENO"
-              ],
-              "default": "ZIDEN"
+        "requestBody": {
+          "description": "Your holderId, dek",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Holder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
             }
           }
+        }
+      },
+      "put": {
+        "tags": [
+          "holder"
         ],
+        "summary": "API for post data encrypt",
+        "description": "API for post data encrypt",
         "requestBody": {
           "description": "Your holderId, dek",
           "content": {
@@ -216,18 +242,6 @@
             "schema": {
               "type": "string",
               "example": "123"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ZIDEN",
-                "EUENO"
-              ],
-              "default": "ZIDEN"
             }
           }
         ],

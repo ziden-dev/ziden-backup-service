@@ -10,7 +10,8 @@ export class HolderRoutes {
     }
 
     routers(): void {
-        this.router.post("", this.holderController.uploadHolder);
+        this.router.post("", this.holderController.createNewHolder);
+        this.router.put("", this.holderController.uploadHolder);
         this.router.get("", this.holderController.getHolder);
     }
 }
