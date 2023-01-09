@@ -34,7 +34,7 @@ export class StorageController {
             if (!id || typeof id != "string") {
                 throw("Invalid storageId")
             };
-            const storage = getStorageById(id);
+            const storage = await getStorageById(id);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, storage, ResultMessage.APISUCCESS.message));
         } catch (err: any) {
             res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));

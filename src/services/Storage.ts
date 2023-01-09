@@ -11,7 +11,7 @@ export async function addNewStorage(name: string, description: string, endpointU
 
     await newStorage.save();
     return {
-        storageId: newStorage.id,
+        storageId: newStorage.storageId,
         name: newStorage.name,
         description: newStorage.description,
         endpointUrl: newStorage.endpointUrl
@@ -23,7 +23,7 @@ export async function getAllStorage() {
     let res: Array<any> = [];
     storages.forEach((storage) => {
         res.push({
-            storageId: storage.id,
+            storageId: storage.storageId,
             name: storage.name,
             description: storage.description,
             endpointUrl: storage.endpointUrl
