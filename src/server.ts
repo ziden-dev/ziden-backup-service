@@ -10,8 +10,11 @@ import * as swaggerUi from "swagger-ui-express";
 import { readFileSync } from 'fs';
 import logger from './lib/logger/index.js';
 import morgan from 'morgan';
-import { DataEncryptRoutes } from './routers/dataEncryptRoutes.js';
-import { PrivateKeyEncryptRoutes } from './routers/privateKeyEncryptRoutes.js';
+import { Backup } from './routers/backupRoutes.js';
+import { HolderRoutes } from './routers/holderRoutes.js';
+import { StorageRoutes } from './routers/storageRoutes.js';
+import { DataBackupRoutes } from './routers/dataBackup.js';
+
 const swaggerDocument = JSON.parse(readFileSync("swagger/swagger.json", "utf-8"));
 
 dotenv.config();
@@ -29,8 +32,10 @@ class Server {
     }
 
     public routes(): void {
-        this.app.use("/api/data-encrypt", new DataEncryptRoutes().router);
-        this.app.use("/api/private-key-encrypt", new PrivateKeyEncryptRoutes().router);  
+        this.app.use("/api/backup", new Backup().router);
+        this.app.use("/api/holder", new HolderRoutes().router);  
+        this.app.use("/api/data", new DataBackupRoutes().router);
+        this.app.use("/api/storage", new StorageRoutes().router);  
     }
 
     public config(): void {

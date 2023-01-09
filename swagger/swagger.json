@@ -6,19 +6,27 @@
   },
   "tags": [
     {
-      "name": "data-encrypt",
+      "name": "backup",
       "description": "API for upload and get data encrypt"
     },
     {
-      "name": "private-key-encrypt",
+      "name": "holder",
       "description": "API for upload and get private key encrypt"
+    },
+    {
+      "name": "data",
+      "description": "API for get backup data"
+    },
+    {
+      "name": "storage",
+      "description": "Storage"
     }
   ],
   "paths": {
-    "/api/data-encrypt": {
+    "/api/backup": {
       "post": {
         "tags": [
-          "data-encrypt"
+          "backup"
         ],
         "summary": "API for post data encrypt",
         "description": "API for post data encrypt",
@@ -82,7 +90,7 @@
       },
       "get": {
         "tags": [
-          "data-encrypt"
+          "backup"
         ],
         "summary": "API for get data encrypt by holderId, issuerId or",
         "description": "API for post data encrypt",
@@ -107,6 +115,102 @@
           },
           {
             "name": "claimId",
+            "in": "query",
+            "description": "holder id",
+            "schema": {
+              "type": "string",
+              "example": "123"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/holder": {
+      "post": {
+        "tags": [
+          "holder"
+        ],
+        "summary": "API for post data encrypt",
+        "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ZIDEN",
+                "EUENO"
+              ],
+              "default": "ZIDEN"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Your holderId, dek",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Holder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "holder"
+        ],
+        "summary": "API for get data encrypt by holderId, issuerId or",
+        "description": "API for post data encrypt",
+        "parameters": [
+          {
+            "name": "holderId",
             "in": "query",
             "description": "holder id",
             "schema": {
@@ -151,47 +255,64 @@
         }
       }
     },
-    "/api/private-key-encrypt": {
-      "post": {
+    "/api/data/{id}": {
+      "get": {
         "tags": [
-          "private-key-encrypt"
+          "data"
         ],
-        "summary": "API for post data encrypt",
-        "description": "API for post data encrypt",
+        "summary": "Get data on ZIDEN BACKUP SERVER",
+        "description": "Get data on ZIDEN BACKUP SERVER",
         "parameters": [
           {
-            "name": "type",
-            "in": "query",
+            "name": "id",
+            "in": "path",
+            "description": "id of data",
             "schema": {
               "type": "string",
-              "enum": [
-                "ZIDEN",
-                "EUENO"
-              ],
-              "default": "ZIDEN"
+              "example": "id123"
             }
           }
         ],
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/storage": {
+      "post": {
+        "tags": [
+          "storage"
+        ],
+        "summary": "Create new storage",
+        "description": "Create new storage",
         "requestBody": {
-          "description": "Your holderId, keyEncrypt",
+          "description": "Create new storage",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrivateKeyEncrypt"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/PrivateKeyEncrypt"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/PrivateKeyEncrypt"
+                "$ref": "#/components/schemas/Storage"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "default": {
@@ -218,30 +339,49 @@
       },
       "get": {
         "tags": [
-          "private-key-encrypt"
+          "storage"
         ],
-        "summary": "API for get data encrypt by holderId, issuerId or",
-        "description": "API for post data encrypt",
+        "summary": "get all storage",
+        "description": "get all storage",
+        "responses": {
+          "default": {
+            "description": "API response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/storage/{id}": {
+      "get": {
+        "tags": [
+          "storage"
+        ],
+        "summary": "get storage by id",
+        "description": "get storage by id",
         "parameters": [
           {
-            "name": "holderId",
-            "in": "query",
-            "description": "holder id",
+            "name": "id",
+            "in": "path",
+            "description": "storageId",
             "schema": {
               "type": "string",
-              "example": "123"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ZIDEN",
-                "EUENO"
-              ],
-              "default": "ZIDEN"
+              "example": "id123"
             }
           }
         ],
@@ -330,7 +470,7 @@
           }
         }
       },
-      "PrivateKeyEncrypt": {
+      "Holder": {
         "type": "object",
         "properties": {
           "holderId": {
@@ -338,10 +478,27 @@
             "description": "Holder id",
             "example": "123"
           },
-          "keyEncrypt": {
+          "dek": {
             "type": "string",
             "description": "your DEK encrypted by your publickey",
             "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
+          }
+        }
+      },
+      "Storage": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "name"
+          },
+          "description": {
+            "type": "string",
+            "example": "description"
+          },
+          "endpointUrl": {
+            "type": "string",
+            "example": "endpointUrl"
           }
         }
       }

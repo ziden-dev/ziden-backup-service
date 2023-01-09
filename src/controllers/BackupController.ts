@@ -2,11 +2,10 @@ import { Request, Response } from "express";
 import { buildErrorMessage, buildResponse } from "../common/APIBuilderResponse.js";
 import { ExceptionMessage } from "../common/enum/ExceptionMessages.js";
 import { ResultMessage } from "../common/enum/ResultMessages.js";
-import { getAllClaimByQuery, updateData } from "../services/DataEncypt.js";
+import { getClaim, uploadData } from "../services/Backup.js";
+import { backupData } from "../services/DataBackup.js";
 
-import { euenoGetAllClaimByQuery, euenoUpdateData } from "../services/EuenoDataEncypt.js";
-
-export class DataEncryptController {
+export class BackupController {
     public async updateData(req: Request, res: Response) {
         try {
             const {holderId, issuerId, claimId, data, nonce} = req.body;
@@ -21,15 +20,8 @@ export class DataEncryptController {
                 throw("type must be equal ZIDEN or EUENO");
             }
 
-            if (type == "EUENO") {
-                const apiResponse = await euenoUpdateData(holderId, issuerId, claimId, data, nonce);
-                res.send(buildResponse(ResultMessage.APISUCCESS.status, apiResponse, ResultMessage.APISUCCESS.message));
-            }
-
-            if (type == "ZIDEN") {
-                const apiResponse = await updateData(holderId, issuerId, claimId, data, nonce);
-                res.send(buildResponse(ResultMessage.APISUCCESS.status, apiResponse, ResultMessage.APISUCCESS.message));
-            }
+            const backup = await uploadData(holderId, issuerId, claimId, data, nonce, type);
+            res.send(buildResponse(ResultMessage.APISUCCESS.status, backup, ResultMessage.APISUCCESS.message));
         
         } catch (err: any) {
             res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
@@ -57,25 +49,8 @@ export class DataEncryptController {
                 throw("holderId must be string");
             }
 
-            const {type} = req.query;
-
-            if (type != "ZIDEN" && type != "EUENO") {
-                throw("type must be equal ZIDEN or EUENO");
-            }
-
-            if (type == "EUENO") {
-
-                const dataEncrypt = await euenoGetAllClaimByQuery(holderId, issuerId, claimId);
-            
-                res.send(buildResponse(ResultMessage.APISUCCESS.status, {dataEncrypt: dataEncrypt}, ResultMessage.APISUCCESS.message));
-            }
-
-            if (type == "ZIDEN") {
-
-                const dataEncrypt = await getAllClaimByQuery(holderId, issuerId, claimId);
-            
-                res.send(buildResponse(ResultMessage.APISUCCESS.status, {dataEncrypt: dataEncrypt}, ResultMessage.APISUCCESS.message));
-            }
+            const backup = await getClaim(holderId, issuerId, claimId);
+            res.send(buildResponse(ResultMessage.APISUCCESS.status, backup, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
             res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));

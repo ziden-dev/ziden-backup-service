@@ -12,7 +12,9 @@ export async function getAuthenToken() {
         token = euenoToken.token!;
     }
 
-    if (!checkEuenoTokenValid(token)) {
+    const checkToken = await checkEuenoTokenValid(token);
+
+    if (!checkToken) {
         try {
             const privateKey = PRIVATE_KEY;
     
@@ -328,55 +330,6 @@ export async function uploadClaimDataToEueno(data: any, id: string) {
 
     return storeDataUrl;
 }
-
-
-export async function uploadPrivateKeyEncryptToEueno(data: any, id: string) {
-    const token = await getAuthenToken();
-
-    const projectId = await getProjectId("ZIDEN_BACKUP", token);
-    
-    const rootFolder = await getFolderId(projectId, "", "", token);
-
-    const claimFolder = await getFolderId(projectId, rootFolder, "KEY", token);
-
-    // delete old file
-    const fileId = await getFileId(projectId, claimFolder, id + ".json", token);
-    if (fileId != "") {
-        await deleteFile(projectId, fileId, token);
-    }
-
-    // auth-upload
-    let url = "https://developers.eueno.io/api/v3/project-file/auth-upload";
-    let body = {
-        "action": "write",
-        "content_length": 0,
-        "content_type": "application/json",
-        "file_name": id + ".json",
-        "method": "UN_ENCRYPT",
-        "project_id": projectId,
-        "path": "/KEY/"
-    }
-
-    let response = await axios({
-        method: "post",
-        url: url,
-        data: body,
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    });
-
-    const urlUploadFile = response.data.data.url_upload_file;
-    const urlUploadTorrent = response.data.data.url_upload_torrent;
-
-    await uploadData(urlUploadFile, data);
-    await uploadData(urlUploadTorrent, data);
-
-    const storeDataUrl = response.data.data.webseed[0];
-
-    return storeDataUrl;
-}
-
 
 export async function uploadData(url: string, data: any) {
     const x = await axios({

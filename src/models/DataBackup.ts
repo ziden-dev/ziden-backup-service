@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DataEncrypt = new mongoose.Schema({
+const DataBackup = new mongoose.Schema({
     _id: String,
     holderId: String,
     issuerId: String,
@@ -9,4 +9,4 @@ const DataEncrypt = new mongoose.Schema({
     nonce: String
 });
 
-export default mongoose.model("DataEncrypt", DataEncrypt);
+export default mongoose.model("DataBackup", DataBackup);

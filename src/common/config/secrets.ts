@@ -16,3 +16,5 @@ export const OWALLET_ADDRESS = process.env.OWALLET_ADDRESS ?? "";
 export const WALLET_ADDRESS = process.env.WALLET_ADDRESS ?? "";
 export const PRIVATE_KEY = process.env.PRIVATE_KEY ?? "";
 export const BUCKET_ID = process.env.BUCKET_ID ?? "";
+
+export const BACKUP_SERVER_URI = process.env.BACKUP_SERVER_URI ?? "http://localhost:5009";
