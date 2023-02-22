@@ -30,12 +30,18 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
         accessUri = await uploadClaimDataToEueno(claimInfor, id);
     }
 
-    const newBackup = new Backup({
-        claimId: claimId,
-        accessUri: accessUri,
-        storageId: storageId
-    });
-    await newBackup.save();
+    const lastBackup = await Backup.findOne({claimId: claimId, storageId: storageId});
+    if (!lastBackup) {
+        const newBackup = new Backup({
+            claimId: claimId,
+            accessUri: accessUri,
+            storageId: storageId
+        });
+        await newBackup.save();    
+    } else {
+        lastBackup.accessUri = accessUri;
+        await lastBackup.save();
+    }
 
     const claim = await Claim.findOne({holderId: holderId, issuerId: issuerId, claimId: claimId});
     if (!claim) {
@@ -50,9 +56,9 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
     }
 
     return {
-        claimId: newBackup.claimId,
-        accessUri: newBackup.accessUri,
-        storageId: newBackup.storageId
+        claimId: claimId,
+        accessUri: accessUri,
+        storageId: storageId
     }
 }
 
