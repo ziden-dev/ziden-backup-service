@@ -23,7 +23,7 @@
     }
   ],
   "paths": {
-    "/api/backup": {
+    "/api/v1/backup": {
       "post": {
         "tags": [
           "backup"
@@ -147,7 +147,7 @@
         }
       }
     },
-    "/api/holder": {
+    "/api/v1/holder": {
       "post": {
         "tags": [
           "holder"
@@ -269,7 +269,7 @@
         }
       }
     },
-    "/api/data/{id}": {
+    "/api/v1/data/{id}": {
       "get": {
         "tags": [
           "data"
@@ -311,7 +311,7 @@
         }
       }
     },
-    "/api/storage": {
+    "/api/v1/storage": {
       "post": {
         "tags": [
           "storage"
@@ -381,7 +381,7 @@
         }
       }
     },
-    "/api/storage/{id}": {
+    "/api/v1/storage/{id}": {
       "get": {
         "tags": [
           "storage"

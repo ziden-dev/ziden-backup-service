@@ -32,10 +32,10 @@ class Server {
     }
 
     public routes(): void {
-        this.app.use("/api/backup", new Backup().router);
-        this.app.use("/api/holder", new HolderRoutes().router);  
-        this.app.use("/api/data", new DataBackupRoutes().router);
-        this.app.use("/api/storage", new StorageRoutes().router);  
+        this.app.use("/api/v1/backup", new Backup().router);
+        this.app.use("/api/v1/holder", new HolderRoutes().router);  
+        this.app.use("/api/v1/data", new DataBackupRoutes().router);
+        this.app.use("/api/v1/storage", new StorageRoutes().router);  
     }
 
     public config(): void {

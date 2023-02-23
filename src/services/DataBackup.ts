@@ -12,7 +12,7 @@ export async function backupData(holderId: string, issuerId: string, claimId: st
             dataBackup.data = data;
             dataBackup.nonce = nonce;
             await dataBackup.save();
-            return BACKUP_SERVER_URI + "/api/data/" + dataBackup.id;
+            return BACKUP_SERVER_URI + "/api/v1/data/" + dataBackup.id;
         } else {
             const newData = new DataBackup({
                 _id: id,
@@ -23,7 +23,7 @@ export async function backupData(holderId: string, issuerId: string, claimId: st
                 nonce: nonce
             });
             await newData.save();
-            return BACKUP_SERVER_URI + "/api/data/" + newData.id;
+            return BACKUP_SERVER_URI + "/api/v1/data/" + newData.id;
         }
     } catch (err: any) {
         throw (err);
