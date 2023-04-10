@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Holder = new mongoose.Schema({
     holderId: String,
-    dek: String,
+    publicKey: String,
     lastUpdate: Number
 });
 

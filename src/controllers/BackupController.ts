@@ -8,9 +8,9 @@ import { backupData } from "../services/DataBackup.js";
 export class BackupController {
     public async updateData(req: Request, res: Response) {
         try {
-            const {holderId, issuerId, claimId, data, nonce} = req.body;
+            const {holderId, issuerId, claimId, data} = req.body;
 
-            if (!holderId || !issuerId || !claimId|| !data || !nonce) {
+            if (!holderId || !issuerId || !claimId|| !data) {
                 throw("Invalid data!");
             }
 
@@ -20,7 +20,7 @@ export class BackupController {
                 throw("type must be equal ZIDEN or EUENO");
             }
 
-            const backup = await uploadData(holderId, issuerId, claimId, data, nonce, type);
+            const backup = await uploadData(holderId, issuerId, claimId, data, type);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, backup, ResultMessage.APISUCCESS.message));
         
         } catch (err: any) {

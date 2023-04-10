@@ -2,17 +2,17 @@ import { Request, Response } from "express";
 import { buildErrorMessage, buildResponse } from "../common/APIBuilderResponse.js";
 import { ExceptionMessage } from "../common/enum/ExceptionMessages.js";
 import { ResultMessage } from "../common/enum/ResultMessages.js";
-import { createNewHolder, getHolderDek, updateHolderDek } from "../services/Holder.js";
+import { createNewHolder, getHolderPublicKey, updateHolderPublicKey } from "../services/Holder.js";
 
 export class HolderController {
     public async createNewHolder(req: Request, res: Response) {
         try {
-            const {holderId, dek} = req.body;
-            if (!holderId || !dek) {
+            const {holderId, publicKey} = req.body;
+            if (!holderId || !publicKey) {
                 throw("Invalid data");
             }
 
-            const holder = await createNewHolder(holderId, dek);
+            const holder = await createNewHolder(holderId, publicKey);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, holder, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
@@ -22,12 +22,12 @@ export class HolderController {
 
     public async uploadHolder(req: Request, res: Response) {
         try {
-            const {holderId, dek} = req.body;
-            if (!holderId || !dek) {
+            const {holderId, publicKey} = req.body;
+            if (!holderId || !publicKey) {
                 throw("Invalid data");
             }
 
-            const holder = await updateHolderDek(holderId, dek);
+            const holder = await updateHolderPublicKey(holderId, publicKey);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, holder, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
@@ -42,7 +42,7 @@ export class HolderController {
                 throw("Invalid holderId");
             }
 
-            const holder = await getHolderDek(holderId);
+            const holder = await getHolderPublicKey(holderId);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, holder, ResultMessage.APISUCCESS.message));
             
             } catch (err: any) {

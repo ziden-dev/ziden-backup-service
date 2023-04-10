@@ -5,8 +5,7 @@ const DataBackup = new mongoose.Schema({
     holderId: String,
     issuerId: String,
     claimId: String,
-    data: String,
-    nonce: String
+    data: String
 });
 
 export default mongoose.model("DataBackup", DataBackup);

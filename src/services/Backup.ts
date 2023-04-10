@@ -5,7 +5,7 @@ import Storage from "../models/Storage.js";
 import { backupData } from "./DataBackup.js";
 import { uploadClaimDataToEueno } from "./EuenoIntegrate.js";
 
-export async function uploadData(holderId: string, issuerId: string, claimId: string, data: string, nonce: string, type: string) {
+export async function uploadData(holderId: string, issuerId: string, claimId: string, data: string, type: string) {
     let accessUri = "";
     let storageId = "";
 
@@ -15,7 +15,7 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
     }
 
     if (type == "ZIDEN") {
-        accessUri = await backupData(holderId, issuerId, claimId, data, nonce);
+        accessUri = await backupData(holderId, issuerId, claimId, data);
     }
 
     if (type == "EUENO") {
@@ -23,19 +23,11 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
             holderId: holderId,
             issuerId: issuerId,
             claimId: claimId,
-            data: data,
-            nonce: nonce
+            data: data        
         }
         const id = v4();
         accessUri = await uploadClaimDataToEueno(claimInfor, id);
     }
-
-    const newBackup = new Backup({
-        claimId: claimId,
-        accessUri: accessUri,
-        storageId: storageId
-    });
-    await newBackup.save();
 
     const claim = await Claim.findOne({holderId: holderId, issuerId: issuerId, claimId: claimId});
     if (!claim) {
@@ -48,6 +40,26 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
 
         await newClaim.save();
     }
+
+    const backupDataResponse = await Backup.findOne({
+        claimId: claimId,
+        accessUri: accessUri,
+        storageId: storageId
+    });
+    if (backupDataResponse) {
+        return {
+            claimId: backupDataResponse.claimId,
+            accessUri: backupDataResponse.accessUri,
+            storageId: backupDataResponse.storageId
+        }
+    }
+
+    const newBackup = new Backup({
+        claimId: claimId,
+        accessUri: accessUri,
+        storageId: storageId
+    });
+    await newBackup.save();
 
     return {
         claimId: newBackup.claimId,

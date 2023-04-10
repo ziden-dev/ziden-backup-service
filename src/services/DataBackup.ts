@@ -1,7 +1,7 @@
 import { BACKUP_SERVER_URI } from "../common/config/secrets.js";
 import DataBackup from "../models/DataBackup.js";
 
-export async function backupData(holderId: string, issuerId: string, claimId: string, data: string, nonce: string) {
+export async function backupData(holderId: string, issuerId: string, claimId: string, data: string) {
     try {
         const id = holderId + "-" + issuerId + "-" + claimId;
 
@@ -10,17 +10,15 @@ export async function backupData(holderId: string, issuerId: string, claimId: st
         });
         if (dataBackup) {
             dataBackup.data = data;
-            dataBackup.nonce = nonce;
             await dataBackup.save();
-            return BACKUP_SERVER_URI + "/data/" + dataBackup.id;
+            return BACKUP_SERVER_URI + "/api/data/" + dataBackup.id;
         } else {
             const newData = new DataBackup({
                 _id: id,
                 holderId: holderId,
                 issuerId: issuerId,
                 claimId: claimId,
-                data: data,
-                nonce: nonce
+                data: data            
             });
             await newData.save();
             return BACKUP_SERVER_URI + "/api/data/" + newData.id;
@@ -39,8 +37,7 @@ export async function getDataById(id: String) {
             holderId: data.holderId,
             issuerId: data.issuerId,
             claimId: data.claimId,
-            data: data.data,
-            nonce: data.nonce
+            data: data.data
         }
     }
 }

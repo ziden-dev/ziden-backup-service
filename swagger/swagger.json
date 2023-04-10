@@ -45,7 +45,7 @@
           }
         ],
         "requestBody": {
-          "description": "Your holderId, issuerId, claimId, data and nonce",
+          "description": "Your holderId, issuerId, claimId, data",
           "content": {
             "application/json": {
               "schema": {
@@ -152,10 +152,10 @@
         "tags": [
           "holder"
         ],
-        "summary": "API for post data encrypt",
-        "description": "API for post data encrypt",
+        "summary": "API create holder",
+        "description": "API create holder",
         "requestBody": {
-          "description": "Your holderId, dek",
+          "description": "Your holderId, publicKey",
           "content": {
             "application/json": {
               "schema": {
@@ -192,10 +192,10 @@
         "tags": [
           "holder"
         ],
-        "summary": "API for post data encrypt",
-        "description": "API for post data encrypt",
+        "summary": "API update holder",
+        "description": "API update holder",
         "requestBody": {
-          "description": "Your holderId, dek",
+          "description": "Your holderId, publicKey",
           "content": {
             "application/json": {
               "schema": {
@@ -232,8 +232,8 @@
         "tags": [
           "holder"
         ],
-        "summary": "API for get data encrypt by holderId, issuerId or",
-        "description": "API for post data encrypt",
+        "summary": "API get publicKey of holderId",
+        "description": "API get publicKey of holderId",
         "parameters": [
           {
             "name": "holderId",
@@ -474,13 +474,8 @@
           },
           "data": {
             "type": "string",
-            "description": "Your data encrypted by your DEK",
+            "description": "Your data encrypted by your publicKey",
             "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
-          },
-          "nonce": {
-            "type": "string",
-            "description": "nonce",
-            "example": "90026a9dde6b4f4e53e98031fac38fb642b6b753aa766756"
           }
         }
       },
@@ -492,10 +487,10 @@
             "description": "Holder id",
             "example": "123"
           },
-          "dek": {
+          "publicKey": {
             "type": "string",
-            "description": "your DEK encrypted by your publickey",
-            "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
+            "description": "your publicKey",
+            "example": "123"
           }
         }
       },
