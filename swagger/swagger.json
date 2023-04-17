@@ -1,21 +1,21 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Issuer Server",
-    "description": "API for issuser server"
+    "title": "Backup Server",
+    "description": "List apis for backup server"
   },
   "tags": [
     {
       "name": "backup",
-      "description": "API for upload and get data encrypt"
+      "description": "List APIs for upload and get data encrypt"
     },
     {
       "name": "holder",
-      "description": "API for upload and get private key encrypt"
+      "description": "List APIs for Holder"
     },
     {
       "name": "data",
-      "description": "API for get backup data"
+      "description": "List APIs for get backup data"
     },
     {
       "name": "storage",
@@ -28,8 +28,8 @@
         "tags": [
           "backup"
         ],
-        "summary": "API for post data encrypt",
-        "description": "API for post data encrypt",
+        "summary": "Upload data encrypt",
+        "description": "User upload data encrypted by user's publicKey",
         "parameters": [
           {
             "name": "type",
@@ -40,24 +40,16 @@
                 "ZIDEN",
                 "EUENO"
               ],
-              "default": "ZIDEN"
-            }
+              "default": "ZIDEN",
+              "description": "Type of Storage"
+            },
+            "required": true
           }
         ],
         "requestBody": {
-          "description": "Your holderId, issuerId, claimId, data",
+          "description": "Your data encrypted by your publicKey",
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DataEncrypt"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/DataEncrypt"
-              }
-            },
-            "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/DataEncrypt"
               }
@@ -66,22 +58,39 @@
           "required": true
         },
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "claimId": {
+                      "type": "string",
+                      "description": "Unique Id of Claim",
+                      "example": "1234"
+                    },
+                    "accessUri": {
+                      "type": "string",
+                      "description": "Access Uri to get your data",
+                      "example": "https://example.access.uri"
+                    },
+                    "storageId": {
+                      "type": "string",
+                      "description": "Storage type",
+                      "example": "1234"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -92,13 +101,13 @@
         "tags": [
           "backup"
         ],
-        "summary": "API for get data encrypt by holderId, issuerId or",
-        "description": "API for post data encrypt",
+        "summary": "Get all Data",
+        "description": "Get all data encrypt by Holder",
         "parameters": [
           {
             "name": "holderId",
             "in": "query",
-            "description": "holder id",
+            "description": "DID of Holder",
             "schema": {
               "type": "string",
               "example": "123"
@@ -107,7 +116,7 @@
           {
             "name": "issuerId",
             "in": "query",
-            "description": "holder id",
+            "description": "DID of Issuer",
             "schema": {
               "type": "string",
               "example": "123"
@@ -116,7 +125,7 @@
           {
             "name": "claimId",
             "in": "query",
-            "description": "holder id",
+            "description": "Unique Id of Claim",
             "schema": {
               "type": "string",
               "example": "123"
@@ -124,22 +133,42 @@
           }
         ],
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "claimId": {
+                        "type": "string",
+                        "description": "Unique Id of Claim",
+                        "example": "1234"
+                      },
+                      "accessUri": {
+                        "type": "string",
+                        "description": "Access Uri to get your data",
+                        "example": "https://example.access.uri"
+                      },
+                      "storageId": {
+                        "type": "string",
+                        "description": "Storage type",
+                        "example": "1234"
+                      }
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -152,8 +181,8 @@
         "tags": [
           "holder"
         ],
-        "summary": "API create holder",
-        "description": "API create holder",
+        "summary": "Create holder",
+        "description": "Create a holder, register publicKey",
         "requestBody": {
           "description": "Your holderId, publicKey",
           "content": {
@@ -166,22 +195,39 @@
           "required": true
         },
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "holderId": {
+                      "type": "string",
+                      "description": "DID of Holder",
+                      "example": "1234"
+                    },
+                    "publicKey": {
+                      "type": "string",
+                      "description": "Holder's publicKey",
+                      "example": "123456"
+                    },
+                    "lastUpdate": {
+                      "type": "integer",
+                      "description": "Holder last updated",
+                      "example": "1681355391"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -192,10 +238,10 @@
         "tags": [
           "holder"
         ],
-        "summary": "API update holder",
-        "description": "API update holder",
+        "summary": "Update holder",
+        "description": "Update holder information",
         "requestBody": {
-          "description": "Your holderId, publicKey",
+          "description": "Holder's data",
           "content": {
             "application/json": {
               "schema": {
@@ -206,22 +252,39 @@
           "required": true
         },
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "holderId": {
+                      "type": "string",
+                      "description": "DID of Holder",
+                      "example": "1234"
+                    },
+                    "publicKey": {
+                      "type": "string",
+                      "description": "Holder's publicKey",
+                      "example": "123456"
+                    },
+                    "lastUpdate": {
+                      "type": "integer",
+                      "description": "Holder last updated",
+                      "example": "1681355391"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -232,36 +295,54 @@
         "tags": [
           "holder"
         ],
-        "summary": "API get publicKey of holderId",
-        "description": "API get publicKey of holderId",
+        "summary": "Get Holder infor",
+        "description": "Get holder information: HolderId, PublicKey, LastUpdate",
         "parameters": [
           {
             "name": "holderId",
             "in": "query",
-            "description": "holder id",
+            "description": "DID of Holder",
             "schema": {
               "type": "string",
               "example": "123"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "holderId": {
+                      "type": "string",
+                      "description": "DID of Holder",
+                      "example": "1234"
+                    },
+                    "publicKey": {
+                      "type": "string",
+                      "description": "Holder's publicKey",
+                      "example": "123456"
+                    },
+                    "lastUpdate": {
+                      "type": "integer",
+                      "description": "Holder last updated",
+                      "example": "1681355391"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -284,26 +365,50 @@
             "schema": {
               "type": "string",
               "example": "id123"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "holderId": {
+                      "type": "string",
+                      "description": "DID of holder",
+                      "example": "1234"
+                    },
+                    "issuerId": {
+                      "type": "string",
+                      "description": "DID of Issuer",
+                      "example": "1234"
+                    },
+                    "claimId": {
+                      "type": "string",
+                      "description": "Unique Id of Claim",
+                      "example": "1234"
+                    },
+                    "data": {
+                      "type": "string",
+                      "format": "hex",
+                      "description": "Data Encrypted",
+                      "example": "1234567890"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -329,22 +434,44 @@
           }
         },
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "storageId": {
+                      "type": "string",
+                      "example": "1234",
+                      "description": "Id of Storage"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "name",
+                      "description": "Name of Storage"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "description",
+                      "description": "Description about Storage"
+                    },
+                    "endpointUrl": {
+                      "type": "string",
+                      "example": "endpointUrl",
+                      "description": "Storage endpoint Url"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -358,22 +485,47 @@
         "summary": "get all storage",
         "description": "get all storage",
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "storageId": {
+                        "type": "string",
+                        "example": "1234",
+                        "description": "Id of Storage"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "name",
+                        "description": "Name of Storage"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "description",
+                        "description": "Description about Storage"
+                      },
+                      "endpointUrl": {
+                        "type": "string",
+                        "example": "endpointUrl",
+                        "description": "Storage endpoint Url"
+                      }
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -396,26 +548,49 @@
             "schema": {
               "type": "string",
               "example": "id123"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
-          "default": {
+          "200": {
             "description": "API response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "type": "object",
+                  "properties": {
+                    "storageId": {
+                      "type": "string",
+                      "example": "1234",
+                      "description": "Id of Storage"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "name",
+                      "description": "Name of Storage"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "description",
+                      "description": "Description about Storage"
+                    },
+                    "endpointUrl": {
+                      "type": "string",
+                      "example": "endpointUrl",
+                      "description": "Storage endpoint Url"
+                    }
+                  }
                 }
-              },
-              "application/xml": {
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -428,48 +603,24 @@
     "schemas": {
       "APIResponse": {
         "type": "object",
-        "properties": {
-          "status": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "message": {
-            "type": "string"
-          },
-          "data": {
-            "type": "object"
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string",
-            "example": "username01"
-          },
-          "password": {
-            "type": "string",
-            "example": "password01"
-          }
-        }
+        "properties": {}
       },
       "DataEncrypt": {
         "type": "object",
         "properties": {
           "holderId": {
             "type": "string",
-            "description": "Holder",
+            "description": "DID of holder",
             "example": "123"
           },
           "issuerId": {
             "type": "string",
-            "description": "iusser",
+            "description": "DID of issuer",
             "example": "123"
           },
           "claimId": {
             "type": "string",
-            "description": "claim",
+            "description": "Unique Id of Claim",
             "example": "123"
           },
           "data": {
@@ -477,37 +628,70 @@
             "description": "Your data encrypted by your publicKey",
             "example": "60b03f85264f804a6f532e82d1dc97c8925d87c61a52563c90f0c2a612f32425a045a6f118956cafaf48deb8dfb8a7790207e01e412acf58a4906089a18bbee4b7f0513a10df4d86e4ec24a90932346582de5d80dd7f360b23dc0d6279fb440515f4f1ba1977d939707fa24b1c897cd2"
           }
-        }
+        },
+        "required": [
+          "holderId",
+          "issuerId",
+          "claimId",
+          "data"
+        ]
       },
       "Holder": {
         "type": "object",
         "properties": {
           "holderId": {
             "type": "string",
-            "description": "Holder id",
+            "description": "DID of Holder",
             "example": "123"
           },
           "publicKey": {
             "type": "string",
-            "description": "your publicKey",
+            "description": "Holder's publicKey",
             "example": "123"
           }
-        }
+        },
+        "required": [
+          "holderId",
+          "publicKey"
+        ]
       },
       "Storage": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "example": "name"
+            "example": "name",
+            "description": "Name of Storage"
           },
           "description": {
             "type": "string",
-            "example": "description"
+            "example": "description",
+            "description": "Description about Storage"
           },
           "endpointUrl": {
             "type": "string",
-            "example": "endpointUrl"
+            "example": "endpointUrl",
+            "description": "Storage endpoint Url"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "endpointUrl"
+        ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "type error",
+            "example": "Invalid request"
+          },
+          "message": {
+            "type": "string",
+            "description": "error message",
+            "example": "Invalid request"
           }
         }
       }

@@ -24,7 +24,7 @@ export class BackupController {
             res.send(buildResponse(ResultMessage.APISUCCESS.status, backup, ResultMessage.APISUCCESS.message));
         
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 
@@ -53,7 +53,7 @@ export class BackupController {
             res.send(buildResponse(ResultMessage.APISUCCESS.status, backup, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 }

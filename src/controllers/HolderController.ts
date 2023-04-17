@@ -16,7 +16,7 @@ export class HolderController {
             res.send(buildResponse(ResultMessage.APISUCCESS.status, holder, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 
@@ -31,7 +31,7 @@ export class HolderController {
             res.send(buildResponse(ResultMessage.APISUCCESS.status, holder, ResultMessage.APISUCCESS.message));
 
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 
@@ -47,7 +47,7 @@ export class HolderController {
             
             } catch (err: any) {
 
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 }

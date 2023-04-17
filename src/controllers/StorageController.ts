@@ -15,7 +15,7 @@ export class StorageController {
             const storage = await addNewStorage(name, description, endpointUrl);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, storage, ResultMessage.APISUCCESS.message));
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 
@@ -24,7 +24,7 @@ export class StorageController {
             const storage = await getAllStorage();
             res.send(buildResponse(ResultMessage.APISUCCESS.status, storage, ResultMessage.APISUCCESS.message));
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 
@@ -37,7 +37,7 @@ export class StorageController {
             const storage = await getStorageById(id);
             res.send(buildResponse(ResultMessage.APISUCCESS.status, storage, ResultMessage.APISUCCESS.message));
         } catch (err: any) {
-            res.send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
+            res.status(400).send(buildErrorMessage(ExceptionMessage.UNKNOWN.status, err, ExceptionMessage.UNKNOWN.message));
         }
     }
 }

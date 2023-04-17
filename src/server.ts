@@ -14,6 +14,7 @@ import { Backup } from './routers/backupRoutes.js';
 import { HolderRoutes } from './routers/holderRoutes.js';
 import { StorageRoutes } from './routers/storageRoutes.js';
 import { DataBackupRoutes } from './routers/dataBackup.js';
+import redoc from 'redoc-express';
 
 const swaggerDocument = JSON.parse(readFileSync("swagger/swagger.json", "utf-8"));
 
@@ -89,6 +90,16 @@ class Server {
 
     private configSwagger(): void {
       this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+      this.app.get('/docs/swagger.json', (req, res) => {
+        res.send(swaggerDocument);
+      });  
+      this.app.get(
+        '/docs',
+        redoc({
+          title: 'API Docs',
+          specUrl: '/docs/swagger.json'
+        })
+      );
     }
     
     public start(): void {
