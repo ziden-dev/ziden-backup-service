@@ -10,6 +10,9 @@ services:
       - ./src:/home/node/app/src
       - ./logs:/home/node/app/logs
     container_name: backup-server
+    networks:
+      - ziden
+      - default
     depends_on:
       - backup-db
     expose:
@@ -21,5 +24,12 @@ services:
     image: mongo
     volumes:
       - mongodb-backup:/data/db
+    networks:
+      - default
 volumes:
   mongodb-backup:
+networks:
+  ziden:
+    external: true
+    name: ziden
+  default:
