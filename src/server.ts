@@ -14,6 +14,8 @@ import { Backup } from './routers/backupRoutes.js';
 import { HolderRoutes } from './routers/holderRoutes.js';
 import { StorageRoutes } from './routers/storageRoutes.js';
 import { DataBackupRoutes } from './routers/dataBackup.js';
+import { AuthDataBackupRoutes } from './routers/authDataBackup.js';
+import { AuthBackup } from './routers/authBackupRoutes.js';
 
 const swaggerDocument = JSON.parse(readFileSync("swagger/swagger.json", "utf-8"));
 
@@ -35,7 +37,10 @@ class Server {
         this.app.use("/api/v1/backup", new Backup().router);
         this.app.use("/api/v1/holder", new HolderRoutes().router);  
         this.app.use("/api/v1/data", new DataBackupRoutes().router);
-        this.app.use("/api/v1/storage", new StorageRoutes().router);  
+        this.app.use("/api/v1/storage", new StorageRoutes().router); 
+         
+        this.app.use("/api/v1/auth-backup", new AuthBackup().router);
+        this.app.use("/api/v1/auth-claim", new AuthDataBackupRoutes().router);
     }
 
     public config(): void {

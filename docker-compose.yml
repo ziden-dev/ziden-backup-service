@@ -22,6 +22,8 @@ services:
     command: npm run start
   backup-db:
     image: mongo
+    ports:
+      - 27017:27017
     volumes:
       - mongodb-backup:/data/db
     networks:
@@ -33,3 +35,4 @@ networks:
     external: true
     name: ziden
   default:
+
