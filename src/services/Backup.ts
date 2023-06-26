@@ -3,7 +3,6 @@ import Backup from "../models/Backup.js";
 import Claim from "../models/Claim.js";
 import Storage from "../models/Storage.js";
 import { backupData } from "./DataBackup.js";
-import { uploadClaimDataToEueno } from "./EuenoIntegrate.js";
 
 export async function uploadData(holderId: string, issuerId: string, claimId: string, data: string, nonce: string, type: string) {
     let accessUri = "";
@@ -14,21 +13,7 @@ export async function uploadData(holderId: string, issuerId: string, claimId: st
         storageId = storage.id;
     }
 
-    if (type == "ZIDEN") {
-        accessUri = await backupData(holderId, issuerId, claimId, data, nonce);
-    }
-
-    if (type == "EUENO") {
-        const claimInfor = {
-            holderId: holderId,
-            issuerId: issuerId,
-            claimId: claimId,
-            data: data,
-            nonce: nonce
-        }
-        const id = v4();
-        accessUri = await uploadClaimDataToEueno(claimInfor, id);
-    }
+    accessUri = await backupData(holderId, issuerId, claimId, data, nonce);
 
     const lastBackup = await Backup.findOne({claimId: claimId, storageId: storageId});
     if (!lastBackup) {

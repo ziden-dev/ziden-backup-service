@@ -14,10 +14,9 @@ export class BackupController {
                 throw("Invalid data!");
             }
 
-            const {type} = req.query;
-
-            if (type != "ZIDEN" && type != "EUENO") {
-                throw("type must be equal ZIDEN or EUENO");
+            let {type} = req.query;
+            if (typeof type != 'string') {
+                type = '';
             }
 
             const backup = await uploadData(holderId, issuerId, claimId, data, nonce, type);
